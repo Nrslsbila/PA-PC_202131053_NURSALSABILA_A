@@ -10,7 +10,7 @@ Dalam perkembangan teknologi, remove background semakin didukung oleh alat dan p
 Dengan demikian, remove background merupakan komponen penting dalam pengolahan citra. Hal ini memungkinkan pemisahan objek dari latar belakang dan memberikan fleksibilitas serta kemampuan kreatif yang lebih besar dalam berbagai konteks aplikasi pengolahan citra.
 
 
-# Tahapan Pengerjaan Project
+# Tahapan Pengerjaan Project, Penjelasan, & Teori Tambahan
 - Import Library
 - Read and Show Image
 - Convert Image to Binary with Thresholding Method
@@ -43,12 +43,41 @@ untuk melakukan instalasi = pip install rembg
 Matplotlib adalah sebuah open source library yang memiliki kemampuan untuk mendukung berbagai jenis gambar. Library ini digunakan untuk membuat berbagai jenis visualisasi data seperti plot, histogram, bar chart, dan jenis-jenis grafik lainnya. Selain itu, ini juga sering digunakan dalam konteks server aplikasi web, shell, dan skrip python untuk mempermudah visualisasi data.
 untuk melakukan instalasi = pip install matplotlib
 
-## Read and Show Image
-Pada bagian ini, kita akan melakukan proses pembacaan gambar menggunakan fungsi cv.imread() dari OpenCV yang disimpan dalam vaiabel "image". Kemudian kita akan melakukan konversi gambar dari format BGR 
+### Read and Show Image
+Pada bagian ini, kita akan melakukan proses pembacaan gambar menggunakan fungsi cv.imread() dari OpenCV yang disimpan dalam vaiabel "image". Kemudian kita akan melakukan konversi gambar dari format BGR menjadi RGB menggunakan fungsi "cv.cvtColor()" yang disimpan dalam variabel "rgb". Setelah itu kita akan menampilkan objek yang telah kita input menggunakan fungsi 'plt.imshow()' dari matplotlib dan menggunakan fungsi 'plt.title()' untuk memberikan judul pada gambar. 
+
+### Convert Image to Binary with Thresholding Method
+Untuk menghapus latar belakang, citra asli tadi perlu kita ubah ke skala abu-abu terlebih dahulu menggunakan cv.cvtColor() dengan konversi dari BGR ke grayscale. Selanjutnya, digunakan teknik thresholding dengan metode Otsu (cv.THRESH_OTSU) untuk menghasilkan gambar biner (thresh). Dalam gambar biner, latar belakang akan menjadi hitam dan objek utama akan menjadi putih.
+
+### Contour from Binary
+Setelah mendapatkan gambar biner, kita akan melakukan pencarian kontur menggunakan cv.findContours() dari OpenCV untuk mengidentifikasi tepi objek pada gambar. Kontur adalah garis kurva yang menghubungkan piksel-piksel yang memiliki intensitas atau warna yang serupa. Dalam konteks penghapusan latar belakang, kontur digunakan untuk menentukan batas objek utama yang ingin dipertahankan, sementara latar belakang dihapus.
+
+### Mask
+Pada bagian ini, maska hitam dibuat dengan ukuran yang sama seperti gambar asli menggunakan np.zeros() untuk mengisolasi objek yang ingin dipertahankan, yaitu objek tanpa latar belakang.
+
+### Contour Image on Mask
+Setelah itu, kontur gambar digunakan untuk menggambar batas objek pada maska dengan warna putih (255) menggunakan fungsi cv.drawContours().
+
+### Merge the Original Images with Masks Using the Bitwise AND Operator
+Pada langkah ini, kita menggunakan maska untuk memisahkan objek pada gambar asli menggunakan operasi bitwise AND. Hasilnya disimpan dalam variabel `rmv` yang merupakan gambar tanpa latar belakang. Operasi bitwise AND bekerja pada setiap piksel gambar asli dan maska. Piksel maska putih (nilai 255) akan mempertahankan piksel gambar asli, sementara piksel maska hitam (nilai 0) akan menghapus piksel gambar asli. Dengan demikian, gambar yang dihasilkan akan mempertahankan objek yang ditandai oleh maska dan menghapus latar belakangnya. Pada bagian ini, sebenarnya kita sudah berhasil melakukan penghapusan latar belakang pada gambar. Hanya saja, karena saya ingin mendapatkan hasil yang lebih baik maka kita akan melangkah ke step selanjutnya.
+
+### Remove Background
+Pada step ini, kita akan melakukan penghapusan latar belakang menggunakan library 'rembg' yang disimpan dalam variabel output kemudian kita akan menampilkan hasilnya menggunakan 'plt.imshow' dan memberikan judul menggunakan plt.title.
+
+### Show Original and Output Image
+Pada bagian ini, kita akan menampilkan gambar asli dan hasil dari citra yang telah kita proses.
+
+### Save Image
+Terakhir, setelah semua proses dilakukan kita akan melakukan penyimpanan gambar menggunakan cv.imwrite() dan disimpan dalam file output.png dengan format png
 
 
-## Sumber
+# Sumber
+## Jurnal
+[ResearchGate - Autonomous image background removal for accurate and efficient close-range photogrammetry](https://www.researchgate.net/publication/365500074_Autonomous_image_background_removal_for_accurate_and_efficient_close-range_photogrammetry)
 
+[CoreIT - Deteksi Obyek Manusia Pada Basis Data Video Menggunakan Metode Background Subtraction Dan Operasi Morfologi](https://ejournal.uin-suska.ac.id/index.php/coreit/article/view/2391/pdf)
+
+## Referensi Program
 [ResearchGate - Pengolahan Citra Digital Menggunakan Python](https://www.researchgate.net/publication/358220979_Pengolahan_Citra_Digital_Menggunakan_Python)
 
 [Medium - Effortlessly Remove Backgrounds in Python ](https://medium.com/@HeCanThink/rembg-effortlessly-remove-backgrounds-in-python-c2248501f992)
